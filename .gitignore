@@ -1,0 +1,13 @@
+# Node dependencies
+node_modules/
+dist/
+
+# Java build directories
+target/
+build/
+.gradle/
+
+# IDE settings & Environment files
+.idea/
+.vscode/
+.env
