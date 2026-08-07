@@ -7,7 +7,10 @@
     - [3.1 Determine format to use for Claude prompt to build the web app (Since 1st time using Claude for this).](#31-determine-format-to-use-for-claude-prompt-to-build-the-web-app-since-1st-time-using-claude-for-this)
     - [3.2 Figure out Claude prompt specifics to build the web app as expected (Since 1st time using Claude for this).](#32-figure-out-claude-prompt-specifics-to-build-the-web-app-as-expected-since-1st-time-using-claude-for-this)
   - [4. Initial App Generation via Claude](#4-initial-app-generation-via-claude)
-  - [5. Claude Code Prompts During Development](#5-claude-code-prompts-during-development)
+  - [5. Claude Code Prompts During Development (Separate File: PROMPTS\_Claude.md)](#5-claude-code-prompts-during-development-separate-file-prompts_claudemd)
+  - [6. AI usage besides Claude after initial app creation](#6-ai-usage-besides-claude-after-initial-app-creation)
+    - [6.1 Dev Setup: Build command failing when run in terminal (IntelliJ but PowerShell in general)](#61-dev-setup-build-command-failing-when-run-in-terminal-intellij-but-powershell-in-general)
+    - [6.2 Dev setup: command failing for Vite Dev server install](#62-dev-setup-command-failing-for-vite-dev-server-install)
 
 # AI Usage Summary
 This file documents the AI prompts used during the development of this project and explains their contribution to the final solution.
@@ -135,5 +138,16 @@ Generate a root-level `PROMPTS_Claude.md` file and append to it throughout our s
 ```
 * **Contribution:** Claude built out the initial app based on these requirements which I then verified and tweaked according to what I wanted it to look like and function.
 
-## 5. Claude Code Prompts During Development
+## 5. Claude Code Prompts During Development (Separate File: PROMPTS_Claude.md)
 You can refer to the 'PROMPTS_Claude.md' file showcasing the subsequent user prompts I used (such as follow-up feature requests, bug fixes, or refinements etc.). 
+
+## 6. AI usage besides Claude after initial app creation
+### 6.1 Dev Setup: Build command failing when run in terminal (IntelliJ but PowerShell in general)
+* **Prompt (Gemini):**
+  > "So when I try to run the dev build command 'mvn spring-boot:run -Dspring-boot.run.profiles=dev' in the IntelliJ console I get the following error: [ErrorDetails trimmed for brevity]"
+* **Contribution:** Indicated that since it is PowerShell, it needs double quotes around the '-Dspring...' parameter to work as expected: mvn spring-boot:run "-Dspring-boot.run.profiles=dev"
+
+### 6.2 Dev setup: command failing for Vite Dev server install
+* **Prompt (Gemini):**
+  > "No I get the following error for the Vite Dev server install: 'npm install --prefix frontend' [ErrorDetails trimmed for brevity]"
+* **Contribution:** Indicated that best option (to avoid have to cd into dir) is to introduce package.json in the project root and then use this command instead: npm install --workspace=frontend

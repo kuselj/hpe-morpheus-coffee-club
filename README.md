@@ -226,17 +226,17 @@ Frontend and backend stay completely decoupled. Run each in **its own terminal**
 **Terminal 1 — Spring Boot backend on port 8080:**
 
 ```bash
-mvn spring-boot:run -Dspring-boot.run.profiles=dev
+mvn spring-boot:run "-Dspring-boot.run.profiles=dev"
 ```
 
 **Terminal 2 — Vite dev server on port 5173:**
 
 ```bash
-npm install --prefix frontend
+npm install --workspace=frontend
 ```
 
 ```bash
-npm run dev --prefix frontend
+npm run dev --workspace=frontend
 ```
 
 Then open <http://localhost:5173>.
