@@ -7,6 +7,11 @@ target/
 build/
 .gradle/
 
+# H2 file database (created at runtime, re-seeded on first startup)
+data/
+*.mv.db
+*.trace.db
+
 # IDE settings & Environment files
 .idea/
 .vscode/

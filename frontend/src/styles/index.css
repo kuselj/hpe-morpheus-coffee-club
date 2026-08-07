@@ -1,0 +1,44 @@
+@import 'tailwindcss';
+
+/*
+ * All shared, repeating style elements live in coffeehouse.css so that the components stay
+ * focused on structure and behaviour. Only global page-level rules belong in this file.
+ */
+@import './coffeehouse.css';
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-dvh bg-stone-950 text-stone-100 antialiased;
+    font-family:
+      'Segoe UI',
+      system-ui,
+      -apple-system,
+      'Helvetica Neue',
+      sans-serif;
+  }
+
+  /* The interface is dark end to end, so ask the browser for dark form controls too. */
+  :root {
+    color-scheme: dark;
+  }
+
+  /* Keep number inputs looking like the rest of the fields. */
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inline-spin-button {
+    @apply m-0 appearance-none;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  ::selection {
+    @apply bg-amber-500/30 text-amber-50;
+  }
+}

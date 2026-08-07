@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: hpe-morpheus-coffee-club
+
+  # File-backed H2 so the order history survives server restarts.
+  datasource:
+    url: jdbc:h2:file:./data/coffeedb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jackson:
+    default-property-inclusion: non_null
+
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          max-age: 3600
+          cache-public: true
+
+server:
+  # Render (and any other PaaS) injects PORT; fall back to 8080 for local runs.
+  port: ${PORT:8080}
+  compression:
+    enabled: true
+  error:
+    include-message: never
+    include-stacktrace: never
+
+logging:
+  level:
+    com.hpe.morpheus.coffeeclub: INFO

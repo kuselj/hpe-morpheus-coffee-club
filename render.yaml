@@ -1,0 +1,23 @@
+# Render blueprint for the 'prod-cloud' configuration.
+# Point Render at this repository and it will build the root Dockerfile and run
+# the resulting image as a web service. PORT is injected by Render and read by
+# application.yml as ${PORT:8080}.
+services:
+  - type: web
+    name: hpe-morpheus-coffee-club
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/orders/balances
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+
+    # The free plan has an ephemeral filesystem, so the H2 file is reset whenever
+    # the instance restarts or spins down. Attach a persistent disk (paid plans)
+    # to keep order history across restarts in the cloud.
+    #
+    # disk:
+    #   name: coffeedb
+    #   mountPath: /app/data
+    #   sizeGB: 1

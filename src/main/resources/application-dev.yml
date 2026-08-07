@@ -1,0 +1,22 @@
+# Active local coding profile.
+#   mvn spring-boot:run -Dspring-boot.run.profiles=dev
+# The React dev server runs separately on port 5173 and proxies /api/* to this backend.
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  web:
+    resources:
+      # No HTTP caching of static assets while developing.
+      cache:
+        cachecontrol:
+          max-age: 0
+          no-store: true
+
+logging:
+  level:
+    com.hpe.morpheus.coffeeclub: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
