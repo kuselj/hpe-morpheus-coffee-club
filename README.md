@@ -75,7 +75,7 @@ hpe-morpheus-coffee-club/
 │
 ├── src/main/java/com/hpe/morpheus/coffeeclub/
 │   ├── CoffeeClubApplication.java
-│   ├── config/                   Clock bean, dev CORS, seed data
+│   ├── config/                   Clock bean and seed data
 │   ├── controller/               REST API, SPA forwarding, global error handling
 │   ├── dto/                      Request/response records with validation constraints
 │   ├── entity/CoffeeOrder.java   Maps to hpe_morpheus_coffee_club
@@ -226,8 +226,13 @@ Frontend and backend stay completely decoupled. Run each in **its own terminal**
 **Terminal 1 — Spring Boot backend on port 8080:**
 
 ```bash
-mvn spring-boot:run "-Dspring-boot.run.profiles=dev"
+mvn clean spring-boot:run "-Dspring-boot.run.profiles=dev"
 ```
+
+`clean` costs a few seconds and keeps consecutive runs pristine: it clears compiled classes for
+source files you have since deleted, and any static frontend bundle left in `target/classes/static`
+by an earlier `-Pprod` build. It does **not** touch the database — `data/` lives in the project
+root, not in `target/`.
 
 **Terminal 2 — Vite dev server on port 5173:**
 
@@ -242,11 +247,14 @@ npm run dev --workspace=frontend
 Then open <http://localhost:5173>.
 
 - Vite proxies every `/api/*` request to `http://localhost:8080` (configured in
-  [`frontend/vite.config.ts`](frontend/vite.config.ts)), so there is no CORS setup to worry about.
+  [`frontend/vite.config.ts`](frontend/vite.config.ts)). The browser only ever talks to
+  `localhost:5173`, so requests are same-origin and **no CORS configuration is needed anywhere**.
 - Full Hot Module Replacement: saving a `.tsx` or `.css` file updates the browser instantly without
   losing the state of the table.
-- The H2 console is available at <http://localhost:8080/h2-console> in this profile.
-  JDBC URL `jdbc:h2:file:./data/coffeedb`, user `sa`, empty password.
+- The H2 console is available at <http://localhost:8080/h2-console> in this profile. Log in with
+  JDBC URL `jdbc:h2:file:./data/coffeedb;AUTO_SERVER=TRUE`, user `sa`, empty password. The
+  `AUTO_SERVER=TRUE` part matters — without it the console cannot open the database file while the
+  application is running.
 
 ---
 
@@ -370,3 +378,7 @@ The Vite proxy is running but the backend is not. Start the backend first (termi
 
 **I want to reset the ledger.**
 Stop the app and delete the `data/` folder. The next startup re-seeds Bob and Jim.
+
+**The H2 console says "Database may be already in use".**
+The JDBC URL in the console's login form is missing `AUTO_SERVER=TRUE`. Use
+`jdbc:h2:file:./data/coffeedb;AUTO_SERVER=TRUE`.

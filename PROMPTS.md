@@ -11,6 +11,7 @@
   - [6. AI usage besides Claude after initial app creation](#6-ai-usage-besides-claude-after-initial-app-creation)
     - [6.1 Dev Setup: Build command failing when run in terminal (IntelliJ but PowerShell in general)](#61-dev-setup-build-command-failing-when-run-in-terminal-intellij-but-powershell-in-general)
     - [6.2 Dev setup: command failing for Vite Dev server install](#62-dev-setup-command-failing-for-vite-dev-server-install)
+    - [6.3 Dev setup: /h2-console was not working and gave 404 error for index.html](#63-dev-setup-h2-console-was-not-working-and-gave-404-error-for-indexhtml)
 
 # AI Usage Summary
 This file documents the AI prompts used during the development of this project and explains their contribution to the final solution.
@@ -18,7 +19,7 @@ This file documents the AI prompts used during the development of this project a
 ## 1. Architecture & Design
 ### 1.1 Framework Selection
 * **Prompt (Gemini):** 
-  > "What are the best frameworks to use via claude when you want to build a web app in which the pages display correctly on the phone and desktop"
+  > "What are the best frameworks to use via Claude when you want to build a web app in which the pages display correctly on the phone and desktop"
 * **Contribution:** Indicated Vite + React with either Tailwind CSS or Bootstrap for responsive layouts. So went with React and then Tailwind CSS since seems most flexible.
 
 ### 1.2 Licensing & Compliance
@@ -34,7 +35,7 @@ This file documents the AI prompts used during the development of this project a
 ## 3. Claude Prompt Design
 ### 3.1 Determine format to use for Claude prompt to build the web app (Since 1st time using Claude for this).
 * **Prompt (Gemini):** 
-  > "So when you perform create project in claude code app can you put all the requirements and expectations in the What are you trying to achieve box? What is the general format for this?"
+  > "So when you perform create project in Claude code app can you put all the requirements and expectations in the What are you trying to achieve box? What is the general format for this?"
 * **Contribution:** Indicated 'Yes' and asked for the basic high level requirements and provided the basic format example for this which I then used as base and added more context and customization as needed.
 
 ### 3.2 Figure out Claude prompt specifics to build the web app as expected (Since 1st time using Claude for this).
@@ -151,3 +152,9 @@ You can refer to the 'PROMPTS_Claude.md' file showcasing the subsequent user pro
 * **Prompt (Gemini):**
   > "No I get the following error for the Vite Dev server install: 'npm install --prefix frontend' [ErrorDetails trimmed for brevity]"
 * **Contribution:** Indicated that best option (to avoid have to cd into dir) is to introduce package.json in the project root and then use this command instead: npm install --workspace=frontend
+
+### 6.3 Dev setup: /h2-console was not working and gave 404 error for index.html
+* **Prompt (Gemini):**
+* **Note: Just mentioned '[Various]' as prompt as to not clog up this file with all the various prompts used around this.**
+  > "[Various /h2-console troubleshooting & clarifying prompts]"
+* **Contribution:** Sent me down so many wrong rabbit holes with incorrect suggestions. Moved over to Claude for this to look at and fix, which it did.  

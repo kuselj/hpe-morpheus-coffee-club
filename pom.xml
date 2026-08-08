@@ -48,6 +48,16 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!--
+          Spring Boot 4 no longer auto-configures the H2 console from the h2 driver alone; the
+          console servlet lives in its own module. Registration is still gated by
+          spring.h2.console.enabled, which is true for dev and false for prod.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-h2console</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

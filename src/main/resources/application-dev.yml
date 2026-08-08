@@ -1,12 +1,30 @@
 # Active local coding profile.
 #   mvn spring-boot:run -Dspring-boot.run.profiles=dev
-# The React dev server runs separately on port 5173 and proxies /api/* to this backend.
+# The React dev server runs separately on port 5173 and proxies /api/* to this backend, so the
+# browser only ever talks to one origin and no CORS configuration is involved.
 spring:
+  datasource:
+    # AUTO_SERVER=TRUE lets the /h2-console open its own connection to the same file while the
+    # application still holds it. Without it the console fails with "Database may be already in use".
+    # It cannot be combined with DB_CLOSE_ON_EXIT, which H2 rejects as an unsupported combination.
+    url: jdbc:h2:file:./data/coffeedb;AUTO_SERVER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+
   jpa:
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        # Console stays bound to localhost only.
+        web-allow-others: false
 
   web:
     resources:
