@@ -84,6 +84,7 @@ hpe-morpheus-coffee-club/
 │   └── service/                  Balances, payer selection, order persistence
 │
 ├── src/main/resources/
+│   ├── schema.sql                Table DDL, in the agreed column order
 │   ├── application.yml           Shared config; server.port = ${PORT:8080}
 │   ├── application-dev.yml
 │   └── application-prod.yml
@@ -135,7 +136,8 @@ in `total_paid_today`; everyone else gets `0.00`.
 
 ## Data Model
 
-Table `hpe_morpheus_coffee_club` — one row per person per order date.
+Table `hpe_morpheus_coffee_club` — one row per person per order date. The DDL is in
+[`src/main/resources/schema.sql`](src/main/resources/schema.sql).
 
 | Column             | Java field        | Type            | Notes                                            |
 | ------------------ | ----------------- | --------------- | ------------------------------------------------ |

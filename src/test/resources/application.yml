@@ -4,9 +4,14 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password: ""
+  # Tests run against the same schema.sql as production, so entity/schema drift fails the build.
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     open-in-view: false
   h2:
     console:

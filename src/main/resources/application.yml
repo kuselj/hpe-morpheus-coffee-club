@@ -9,9 +9,19 @@ spring:
     username: sa
     password: ""
 
+  # The table is created by schema.sql so that the physical column order matches the agreed
+  # contract; Hibernate would otherwise emit the columns alphabetically.
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+
   jpa:
     hibernate:
-      ddl-auto: update
+      # Hibernate never writes DDL; it only checks the entity still matches schema.sql.
+      ddl-auto: validate
+    # Defer JPA startup until the schema script has run.
+    defer-datasource-initialization: false
     open-in-view: false
     properties:
       hibernate:

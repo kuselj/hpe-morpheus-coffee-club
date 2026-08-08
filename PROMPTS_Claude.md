@@ -54,3 +54,24 @@ _"4. Initial App Generation via Claude"_; it is summarised below rather than rep
   for deleted sources (exactly the `DevCorsConfig` case) and any stale `-Pprod` frontend bundle in
   `target/classes/static`; verified across two consecutive runs that it leaves the `data/` H2 files
   untouched, so the order ledger survives.
+
+---
+
+* **Prompt:**
+  > "So I requested initially that the database columns should be in this order: order_date, name,
+  > drink, price, total_paid_today, is_removed. The README.md matches this - so good there. However
+  > the actual database columns are not in that order and currently shows (see attached image)"
+* **Contribution:** Replaced Hibernate's generated DDL (which emits columns alphabetically and has
+  no ordering option) with an explicit `src/main/resources/schema.sql` in the agreed column order
+  and switched `ddl-auto` to `validate`, so the entity is checked against the real schema instead of
+  defining it; confirmed via `INFORMATION_SCHEMA.COLUMNS` that a fresh database now reports
+  `id, order_date, name, drink, price, total_paid_today, is_removed`.
+
+---
+
+* **Prompt:**
+  > "This is probably too much behind the scenes technical info for README.md audience: [the
+  > explanation of why the DDL lives in schema.sql and why Hibernate is set to ddl-auto: validate]"
+* **Contribution:** Cut it back to a one-line pointer to `schema.sql`, and removed the accompanying
+  `CREATE TABLE IF NOT EXISTS` caveat as well since it is already documented in `schema.sql` itself
+  where a maintainer editing the DDL will see it.
