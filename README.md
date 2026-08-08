@@ -121,7 +121,7 @@ If there is no history at all, only the header row is shown.
 **Add Person** (below the table, left) appends an empty row: blank Name, blank Drink, price `0.00`,
 Remove unticked.
 
-**Payer** (below the table, right) shows `TBD (Until all fields filled)` until every row passes
+**Payer** (below the table, right) shows `TBD (Fill all fields to calculate)` until every row passes
 validation, then shows who is buying. Default values — price `0.00` and Remove unticked — count as
 filled.
 
@@ -130,7 +130,7 @@ filled.
 **Submit** (bottom right) validates and saves. The payer's row is stored with the whole group total
 in `total_paid_today`; everyone else gets `0.00`.
 
-> Note: If person is not ordering today, enter 0 (zero) in the Price field.
+> Note: If someone isn't ordering today, set their Price to 0.
 
 ---
 

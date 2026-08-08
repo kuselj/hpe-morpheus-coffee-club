@@ -75,3 +75,13 @@ _"4. Initial App Generation via Claude"_; it is summarised below rather than rep
 * **Contribution:** Cut it back to a one-line pointer to `schema.sql`, and removed the accompanying
   `CREATE TABLE IF NOT EXISTS` caveat as well since it is already documented in `schema.sql` itself
   where a maintainer editing the DDL will see it.
+
+---
+
+* **Prompt:**
+  > "I updated the UI text strings in the header subtitle, banner note, and payer TBD box to more
+  > ideal verbiage than what I initially requested. Keep these in mind for future UI edits."
+* **Contribution:** Adopted the new wording as the reference copy — synced the two places in
+  `README.md` that still quoted the superseded note and payer placeholder, left the original
+  strings untouched in `PROMPTS.md` since that is the historical record of the request, and
+  verified all four strings (including the reworded footer) render in the running UI.
