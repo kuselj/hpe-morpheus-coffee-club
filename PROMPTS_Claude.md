@@ -85,3 +85,26 @@ _"4. Initial App Generation via Claude"_; it is summarised below rather than rep
   `README.md` that still quoted the superseded note and payer placeholder, left the original
   strings untouched in `PROMPTS.md` since that is the historical record of the request, and
   verified all four strings (including the reworded footer) render in the running UI.
+
+---
+
+* **Prompt:**
+  > "Please update the following assumption 5 in README to be: '5. **One group order per day.**
+  > Submitting multiple times on the same day will **replace** the existing order rather than add to
+  > it...' Can you then move it above the 'A few smaller decisions...' line. GUI Changes: At the top
+  > note section replace the single note with **Notes:** and 2 bullet points."
+* **Contribution:** Promoted the same-day replacement rule into the main assumptions list as item 4
+  and renumbered the remaining two, and replaced the single note above the table with a "Notes:"
+  heading over two bulleted points sourced from an `ORDER_NOTES` array — the container also had to
+  become a `<div>`, since a `<ul>` inside a `<p>` is invalid HTML and breaks the panel styling.
+
+---
+
+* **Prompt:**
+  > "Let's maybe simplify the README assumption from '4. **One group order per day.** Submitting
+  > multiple times on the same day will **replace** the existing order rather than add to it,
+  > preventing duplicate entries in the ledger...' to '4. **One group order per day:** same-day
+  > re-submissions overwrite the previous order of the day (used for corrections, not additional
+  > orders). Orders from previous days are immutable (per Assumption 3).'"
+* **Contribution:** Applied the shorter wording, which also brings the assumption in line with the
+  matching bullet shown in the UI.

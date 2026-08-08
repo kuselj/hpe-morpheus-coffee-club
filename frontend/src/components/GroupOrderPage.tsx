@@ -18,7 +18,19 @@ import { AppHeader } from './AppHeader';
 import { OrderTable } from './OrderTable';
 import { SummaryPanel } from './SummaryPanel';
 
-const ORDER_NOTE = 'Note: If someone isn\'t ordering today, set their Price to 0.';
+/** Guidance shown above the table. Each note leads with the situation, then what to do about it. */
+const ORDER_NOTES: ReadonlyArray<{ lead: string; detail: string }> = [
+  {
+    lead: "If someone isn't ordering today:",
+    detail: 'set their Price to 0.',
+  },
+  {
+    lead: 'One group order per day:',
+    detail:
+      'same-day re-submissions overwrite the previous order of the day (used for corrections, not additional orders).',
+  },
+];
+
 const CORRECT_FIELDS_MESSAGE = 'Please correct the highlighted fields and try again.';
 
 /** Maps the API's row-indexed field errors onto the client-side row ids. */
@@ -269,7 +281,7 @@ export function GroupOrderPage() {
           <h2 id="group-order-heading" className="panel-heading">
             Today&apos;s Group Order
           </h2>
-          <p className="panel-note">
+          <div className="panel-note">
             <svg className="banner-icon text-ember-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path
                 fillRule="evenodd"
@@ -277,8 +289,17 @@ export function GroupOrderPage() {
                 clipRule="evenodd"
               />
             </svg>
-            <span>{ORDER_NOTE}</span>
-          </p>
+            <div className="min-w-0">
+              <p className="font-semibold text-ember-100">Notes:</p>
+              <ul className="mt-1 list-disc space-y-1 pl-4 marker:text-ember-500/80">
+                {ORDER_NOTES.map((note) => (
+                  <li key={note.lead}>
+                    <span className="font-semibold text-ember-100">{note.lead}</span> {note.detail}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
 
         <OrderTable

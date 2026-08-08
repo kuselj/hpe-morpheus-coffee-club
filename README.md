@@ -193,14 +193,14 @@ To keep the development within reasonable time limits the following assumptions 
    end to end testing.
 2. Tax calculations and additions were not incorporated.
 3. Historical order changes/corrections not catered for.
+4. **One group order per day:** same-day re-submissions overwrite the previous order of the day
+   (used for corrections, not additional orders). Orders from previous days are immutable (per
+   Assumption 3).
 
 A few smaller decisions that follow from the requirements are worth calling out:
 
-4. A submission in which nobody is ordering (every price `0.00`, or everyone removed) is rejected,
+5. A submission in which nobody is ordering (every price `0.00`, or everyone removed) is rejected,
    because there is no round to pay for and therefore no payer to select.
-5. Submitting twice on the same day **replaces** that day's rows rather than adding a second round,
-   so the ledger cannot be double-counted by a re-submit. Earlier days are immutable, per
-   assumption 3.
 6. Names are matched case-insensitively and with whitespace collapsed, so `bob`, `Bob` and `Bob `
    all resolve to the same person's lifetime history.
 
