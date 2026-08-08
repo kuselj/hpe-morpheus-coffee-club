@@ -18,7 +18,7 @@ import { AppHeader } from './AppHeader';
 import { OrderTable } from './OrderTable';
 import { SummaryPanel } from './SummaryPanel';
 
-const ORDER_NOTE = 'Note: If person is not ordering today, enter 0 (zero) in the Price field.';
+const ORDER_NOTE = 'Note: If someone isn\'t ordering today, set their Price to 0.';
 const CORRECT_FIELDS_MESSAGE = 'Please correct the highlighted fields and try again.';
 
 /** Maps the API's row-indexed field errors onto the client-side row ids. */

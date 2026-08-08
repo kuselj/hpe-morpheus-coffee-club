@@ -1,7 +1,7 @@
 import type { CoworkerBalance, ErrorsByRowId, OrderRow, RowErrors } from '../types';
 
 /** Shown in the Payer field until every row passes basic validation. */
-export const PAYER_PLACEHOLDER = 'TBD (Until all fields filled)';
+export const PAYER_PLACEHOLDER = 'TBD (Fill all fields to calculate)';
 
 export const NO_ROWS_MESSAGE =
   "At least 1 person is required. Click the 'Add Person' button to add an individual.";

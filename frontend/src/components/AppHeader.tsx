@@ -37,8 +37,7 @@ export function AppHeader() {
         <div>
           <h1 className="app-title">HPE Morpheus Coffee Club</h1>
           <p className="app-subtitle">
-            One person buys the round each day. Whoever is furthest behind on what they have put in
-            versus what they have drunk pays next.
+            One person buys the round each day. The payer is the one furthest behind on what they've contributed vs. what they've consumed.
           </p>
         </div>
       </div>

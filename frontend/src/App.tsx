@@ -13,7 +13,7 @@ export default function App() {
       </main>
 
       <footer className="app-container pt-0 pb-8 text-center text-xs text-stone-600">
-        HPE Morpheus Coffee Club — everyone gets their turn.
+        HPE Morpheus Coffee Club — Caffeine Fairness Delivered.
       </footer>
     </div>
   );
