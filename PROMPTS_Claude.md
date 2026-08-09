@@ -175,3 +175,82 @@ _"4. Initial App Generation via Claude"_; it is summarised below rather than rep
   and lightningcss, so `npm ci` on Alpine installed no usable binding and the build died on an ESM
   import; confirmed by simulating `npm ci`/`npm install` with `--os=linux --libc=musl`, then changed
   Dockerfile stage 1 to resolve without the lockfile so it picks the linux-musl builds.
+
+---
+
+* **Prompt:**
+  > "So I have these 3 separate screenshots of what the page looked like on an apple phone but it has
+  > overlapping sections - can you take it and stich it together to be 1 image instead with now
+  > overlapping/duplicate sections? And store the final image under frontend/public as
+  > 'demo_Apple.png'"
+* **Contribution:** Stitched the three screenshots into a single 946x3899 image, locating each seam
+  by pixel correlation rather than by eye and dropping the repeated iOS status bar and Safari
+  toolbar so no chrome or content appears twice.
+
+---
+
+* **Prompt:**
+  > "Let's rename the files under frontend/public/ so that the prefix is rather preview_ than demo_"
+* **Contribution:** Renamed the three images to the `preview` naming and updated every reference in
+  `README.md`, including the reference-style link label, leaving the older filenames untouched where
+  they appear inside quoted prompts in this log.
+
+---
+
+* **Prompt:**
+  > "Where we have the preview.png image under 'HPE Morpheus Coffee Club' section. Let's update that
+  > section to rather be a table with heading: 'Multi-Device Previews' and the columns below and row
+  > to showcase the preview for each device type: Desktop (the preview.png), Android, Apple:
+  > | Device Type | Preview |"
+* **Contribution:** Replaced the single image with a Multi-Device Previews table covering all three
+  device types and added it to the table of contents; each cell uses a sized `<img>` linking to the
+  full-resolution file, because the full-page phone captures are up to 3899 px tall and a plain
+  markdown image would render unusably large.
+
+---
+
+* **Prompt:**
+  > "In the README.md above the 'Multi-Device Previews' can we add: '## 🚀 Live Demo / Experience the
+  > live web application here: hpe-morpheus-coffee-club.onrender.com'. Then change the
+  > 'Multi-Device Previews' to 'Cross-Platform UI Previews'"
+* **Contribution:** Added the Live Demo section and renamed the previews heading, updating both
+  entries in the table of contents; also checked the deployed site, which now returns the built UI
+  and a working API, confirming the earlier Dockerfile fix resolved the Render build failure.
+
+---
+
+* **Prompt:**
+  > "For the Cross-Platform UI Previews maybe we can change the layout so that Android and Apple are
+  > next to each other as columns underneath the Desktop row"
+* **Contribution:** Rebuilt the previews as an HTML table so the Desktop shot spans the full width
+  with Android and Apple side by side beneath it, and sized the two phone captures to finish within
+  9 px of each other so they line up despite their different aspect ratios.
+
+---
+
+* **Prompt:**
+  > "Since Live Demo & Cross-Platform UI Previews are part of the General section of the initial app
+  > description we can probably remove them from the TOC (table of contents)"
+* **Contribution:** Dropped both entries so the table of contents starts at Features, leaving the
+  two intro sections to read as part of the opening description; the remaining 14 entries were all
+  checked against the headings they point at.
+
+---
+
+* **Prompt:**
+  > "Under the 'Live Demo' section of README.md lets add this bullet below the line with the URL:
+  > Note: the app is running on Render cloud (free plan): * Free instances spin down after ~15
+  > minutes of inactivity, so the next visitor waits 50–60 seconds for a cold start."
+* **Contribution:** Added the cold-start note directly under the live URL, so the warning reaches
+  the reader at the point they are about to click the link rather than only in the deployment
+  section further down.
+
+---
+
+* **Prompt:**
+  > "Can you tweak it to be a bullet underneath the live app URL and something in the lines of:
+  > * **Note:** the app is hosted on Render cloud (free plan) which might result in it loading slowly
+  > initially: * Free plan instances on Render spin down after ~15 minutes of inactivity, so the next
+  > visitor waits 50–60 seconds for a cold start."
+* **Contribution:** Reworked the note into a bullet with the cold-start detail nested beneath it,
+  so the headline reason reads first and the explanation sits under it.

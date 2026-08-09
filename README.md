@@ -13,10 +13,43 @@ net difference = (total they have paid for the group) - (total cost of the drink
 Among everyone ordering today, the lowest net difference pays. A tie goes to whoever appears first
 in the table. Someone with no history starts at `0.00`.
 
-![The group order page: today's order with each person's drink and price, the selected payer and the running total][demo]
+## 🚀 Live Demo
 
-- **Note:** You can also view this demo image in the running app via `/demo.png`
-  (for example <http://localhost:5173/demo.png> in dev), which makes it easy to share.
+Experience the live web application here: **[hpe-morpheus-coffee-club.onrender.com](https://hpe-morpheus-coffee-club.onrender.com/)**
+
+- **Note:** the app is hosted on Render cloud (free plan) which might result in it loading slowly
+  initially:
+  - Free plan instances on Render spin down after ~15 minutes of inactivity, so the next visitor
+    waits 50–60 seconds for a cold start.
+
+## Cross-Platform UI Previews
+
+<table>
+  <tr>
+    <th colspan="2">Desktop</th>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <a href="frontend/public/preview.png"><img src="frontend/public/preview.png" width="720" alt="The group order page in a desktop browser: the order table with each person's drink and price, the selected payer and the running total"></a>
+    </td>
+  </tr>
+  <tr>
+    <th width="50%">Android</th>
+    <th width="50%">Apple</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <a href="frontend/public/preview_Android.png"><img src="frontend/public/preview_Android.png" width="160" alt="The group order page on an Android phone, with each person shown as a stacked card"></a>
+    </td>
+    <td align="center">
+      <a href="frontend/public/preview_Apple.png"><img src="frontend/public/preview_Apple.png" width="200" alt="The group order page on an iPhone, with each person shown as a stacked card"></a>
+    </td>
+  </tr>
+</table>
+
+- **Note:** Each preview is also served by the running app — `/preview.png`,
+  `/preview_Android.png` and `/preview_Apple.png` (for example
+  <http://localhost:5173/preview.png> in dev) — which makes them easy to share.
 
 ---
 
@@ -389,7 +422,3 @@ Stop the app and delete the `data/` folder. The next startup re-seeds Bob and Ji
 **The H2 console says "Database may be already in use".**
 The JDBC URL in the console's login form is missing `AUTO_SERVER=TRUE`. Use
 `jdbc:h2:file:./data/coffeedb;AUTO_SERVER=TRUE`.
-
-<!-- Link references -->
-
-[demo]: frontend/public/demo.png
