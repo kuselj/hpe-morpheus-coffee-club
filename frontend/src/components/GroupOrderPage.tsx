@@ -5,6 +5,7 @@ import {
   calculateTotal,
   createRow,
   formatMoney,
+  isDiscarded,
   isParticipating,
   NO_PARTICIPANTS_MESSAGE,
   NO_ROWS_MESSAGE,
@@ -15,8 +16,13 @@ import {
 } from '../utils/orderLogic';
 import { AlertBanner } from './AlertBanner';
 import { AppHeader } from './AppHeader';
+import { ConfirmDialog } from './ConfirmDialog';
 import { OrderTable } from './OrderTable';
 import { SummaryPanel } from './SummaryPanel';
+
+const RESET_HINT = 'Undo current edits (Historical values not affected).';
+const RESET_CONFIRM =
+  'Are you sure you want to revert current edits? (Historical values not affected)';
 
 /** Guidance shown above the table. Each note leads with the situation, then what to do about it. */
 const ORDER_NOTES: ReadonlyArray<{ lead: string; detail: string }> = [
@@ -65,6 +71,7 @@ export function GroupOrderPage() {
   const [serverErrors, setServerErrors] = useState<ErrorsByRowId>({});
   const [showValidation, setShowValidation] = useState(false);
   const [confirmation, setConfirmation] = useState<GroupOrderResponse | null>(null);
+  const [resetPrompt, setResetPrompt] = useState(false);
 
   const loadOrder = useCallback(async () => {
     setLoading(true);
@@ -72,14 +79,16 @@ export function GroupOrderPage() {
     try {
       const response = await fetchPrepopulatedOrder();
       setRows(
-        response.lines.map((line) =>
-          createRow({
+        response.lines.map((line) => {
+          const price = formatMoney(line.price);
+          return createRow({
             name: line.name,
             drink: line.drink,
-            price: formatMoney(line.price),
-            priceBeforeRemoval: formatMoney(line.price),
-          }),
-        ),
+            price,
+            beforeRemoval: { name: line.name, drink: line.drink, price },
+            original: { name: line.name, drink: line.drink },
+          });
+        }),
       );
       setBalances(toBalanceMap(response.balances));
     } catch (error) {
@@ -112,7 +121,12 @@ export function GroupOrderPage() {
   );
 
   /**
-   * Ticking Remove zeroes the price and remembers what it was; unticking restores it.
+   * Ticking Remove zeroes the price, and for someone carried over from a previous order it also
+   * puts their name and drink back to what they were pre-populated with — so the stored row reads
+   * as the same person who was there last time, just removed. Unticking restores whatever was in
+   * the fields beforehand.
+   *
+   * A row added with 'Add Person' has nothing to restore: it is simply dropped on submit.
    */
   const toggleRemoved = useCallback(
     (id: string, isRemoved: boolean) => {
@@ -122,9 +136,17 @@ export function GroupOrderPage() {
           if (row.id !== id) {
             return row;
           }
-          return isRemoved
-            ? { ...row, isRemoved: true, priceBeforeRemoval: row.price, price: '0.00' }
-            : { ...row, isRemoved: false, price: row.priceBeforeRemoval };
+          if (!isRemoved) {
+            return { ...row, isRemoved: false, ...row.beforeRemoval };
+          }
+          return {
+            ...row,
+            isRemoved: true,
+            beforeRemoval: { name: row.name, drink: row.drink, price: row.price },
+            name: row.original ? row.original.name : row.name,
+            drink: row.original ? row.original.drink : row.drink,
+            price: '0.00',
+          };
         }),
       );
     },
@@ -148,6 +170,14 @@ export function GroupOrderPage() {
     clearFeedback();
     setRows((current) => [...current, createRow()]);
   }, [clearFeedback]);
+
+  /** Reloads the page's starting state, throwing away every unsaved edit. History is untouched. */
+  const resetEdits = useCallback(async () => {
+    setResetPrompt(false);
+    setShowValidation(false);
+    clearFeedback();
+    await loadOrder();
+  }, [clearFeedback, loadOrder]);
 
   /* ----------------------------------------------------------------- Derived */
 
@@ -195,12 +225,21 @@ export function GroupOrderPage() {
       return;
     }
 
-    const payload: OrderLinePayload[] = rows.map((row) => ({
-      name: row.name.trim(),
-      drink: row.drink.trim(),
-      price: row.isRemoved ? 0 : (parsePrice(row.price) ?? 0),
-      isRemoved: row.isRemoved,
-    }));
+    // Rows added and then removed without ever being saved are dropped rather than stored as a
+    // removal of someone who was never in the club.
+    const payload: OrderLinePayload[] = rows
+      .filter((row) => !isDiscarded(row))
+      .map((row) => ({
+        name: row.name.trim(),
+        drink: row.drink.trim(),
+        price: row.isRemoved ? 0 : (parsePrice(row.price) ?? 0),
+        isRemoved: row.isRemoved,
+      }));
+
+    if (payload.length === 0) {
+      setSubmitError(NO_ROWS_MESSAGE);
+      return;
+    }
 
     setSubmitting(true);
     setSubmitError(null);
@@ -323,8 +362,22 @@ export function GroupOrderPage() {
         </div>
       </section>
 
-      {/* Submit sits at the bottom right of the screen. */}
-      <div className="mt-5 flex justify-end">
+      {/* Reset on the left, Submit on the right. On narrow screens Submit stays on top. */}
+      <div className="mt-5 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <button
+          type="button"
+          className="btn-secondary w-full sm:w-auto sm:min-w-[8rem]"
+          title={RESET_HINT}
+          onClick={() => setResetPrompt(true)}
+          disabled={submitting}
+        >
+          <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <path d="M2.6 8a5.4 5.4 0 1 0 1.7-3.9" strokeLinecap="round" />
+            <path d="M2.2 2.4v3.2h3.2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          Reset
+        </button>
+
         <button
           type="button"
           className="btn-primary w-full sm:w-auto sm:min-w-[11rem]"
@@ -341,6 +394,16 @@ export function GroupOrderPage() {
           )}
         </button>
       </div>
+
+      <ConfirmDialog
+        open={resetPrompt}
+        title="Revert current edits?"
+        message={RESET_CONFIRM}
+        confirmLabel="Yes"
+        cancelLabel="Cancel"
+        onConfirm={() => void resetEdits()}
+        onCancel={() => setResetPrompt(false)}
+      />
     </>
   );
 }

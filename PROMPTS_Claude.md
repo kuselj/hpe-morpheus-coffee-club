@@ -108,3 +108,28 @@ _"4. Initial App Generation via Claude"_; it is summarised below rather than rep
   > orders). Orders from previous days are immutable (per Assumption 3).'"
 * **Contribution:** Applied the shorter wording, which also brings the assumption in line with the
   matching bullet shown in the UI.
+
+---
+
+* **Prompt:**
+  > "On the GUI: 1) Add a 'Reset' button at the bottom left of the table, on same line as the
+  > 'Submit' button, hover text 'Undo current edits (Historical values not affected).', asking for
+  > confirmation with 'Yes' and 'Cancel'. 2) When the 'Remove' checkbox is selected: a brand new
+  > entry needs no validation and is not written to the database; an existing person has their name
+  > and drink reset to the original values of the day so the removal is easy to follow."
+* **Contribution:** Added a Reset button paired with a themed confirmation modal that reloads the
+  page's starting state, and taught each row whether it was pre-populated — removing a carried-over
+  person now restores their original name and drink (and locks those fields) so the stored row lines
+  up with their previous entry, while removing a never-saved row skips validation entirely and is
+  dropped from the submitted payload.
+
+---
+
+* **Prompt:**
+  > "With regards to: '"root": "file:.." is sitting in frontend/package.json' When I took it out it
+  > kept popping back in"
+* **Contribution:** Tracked it to `npm install --prefix frontend` run from the repository root —
+  with a `package.json` named `root` in the working directory, npm installs that directory into the
+  prefix as a dependency; removed the entry and deleted the stray `frontend/package-lock.json`,
+  since npm workspaces keep a single lockfile at the root, and reworked Dockerfile stage 1 to
+  install from the workspace root so the container build still gets a reproducible `npm ci`.

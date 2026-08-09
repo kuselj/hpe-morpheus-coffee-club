@@ -15,14 +15,17 @@
 # -----------------------------------------------------------------------------
 FROM node:22-alpine AS frontend-build
 
-WORKDIR /build/frontend
+WORKDIR /build
 
-# Dependencies first so the layer caches while only source files change.
-COPY frontend/package.json frontend/package-lock.json* ./
-RUN npm ci --no-audit --no-fund || npm install --no-audit --no-fund
+# The frontend is an npm workspace, so the single lockfile lives at the repository root and both
+# manifests are needed before dependencies can be installed. Copying them on their own keeps this
+# layer cached while only source files change.
+COPY package.json package-lock.json ./
+COPY frontend/package.json ./frontend/
+RUN npm ci --no-audit --no-fund
 
-COPY frontend/ ./
-RUN npm run build
+COPY frontend/ ./frontend/
+RUN npm run build --workspace=frontend
 
 
 # -----------------------------------------------------------------------------

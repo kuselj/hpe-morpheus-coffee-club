@@ -39,6 +39,8 @@ export function NameField({ row, errors, rowNumber, idPrefix, onChange }: FieldP
         autoComplete="off"
         spellCheck={false}
         placeholder="e.g. Bob"
+        // Locked while removed: the row keeps the values it was pre-populated with.
+        disabled={row.isRemoved}
         aria-label={`Name for person ${rowNumber}`}
         aria-invalid={Boolean(errors.name)}
         aria-describedby={errors.name ? errorId : undefined}
@@ -65,6 +67,7 @@ export function DrinkField({ row, errors, rowNumber, idPrefix, onChange }: Field
         maxLength={80}
         autoComplete="off"
         placeholder="e.g. Cappuccino"
+        disabled={row.isRemoved}
         aria-label={`Drink for person ${rowNumber}`}
         aria-invalid={Boolean(errors.drink)}
         aria-describedby={errors.drink ? errorId : undefined}

@@ -262,6 +262,16 @@
   @apply mt-0.5 h-4.5 w-4.5 shrink-0;
 }
 
+/* --------------------------------------------------------------------- Modal */
+
+@utility modal-overlay {
+  @apply fixed inset-0 z-50 flex items-center justify-center bg-stone-950/80 p-4 backdrop-blur-sm;
+}
+
+@utility modal-panel {
+  @apply w-full max-w-md rounded-2xl border border-stone-700 bg-stone-900/95 p-5 text-stone-100 shadow-[var(--shadow-hearth)] backdrop-blur-md sm:p-6;
+}
+
 /* -------------------------------------------------------------------- Motion */
 
 @utility ember-drift {

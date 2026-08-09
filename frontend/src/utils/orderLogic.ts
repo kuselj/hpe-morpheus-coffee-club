@@ -50,9 +50,19 @@ export function createRow(overrides: Partial<OrderRow> = {}): OrderRow {
     drink: '',
     price: '0.00',
     isRemoved: false,
-    priceBeforeRemoval: '0.00',
+    beforeRemoval: { name: '', drink: '', price: '0.00' },
+    original: null,
     ...overrides,
   };
+}
+
+/**
+ * A row added with 'Add Person' and then removed before ever being saved. There is nothing to
+ * record about someone who never joined, so these rows are dropped on submit and skipped by
+ * validation entirely.
+ */
+export function isDiscarded(row: OrderRow): boolean {
+  return row.isRemoved && row.original === null;
 }
 
 /** Per-row validation mirroring the backend's bean validation rules. */
@@ -88,6 +98,12 @@ export function validateRows(rows: OrderRow[]): ErrorsByRowId {
   const seen = new Map<string, string>();
 
   for (const row of rows) {
+    // A never-saved row that has been removed is thrown away on submit, so nothing about it needs
+    // to be valid — not even its name for the purposes of spotting duplicates.
+    if (isDiscarded(row)) {
+      continue;
+    }
+
     const rowErrors = validateRow(row);
 
     const key = nameKey(row.name);
