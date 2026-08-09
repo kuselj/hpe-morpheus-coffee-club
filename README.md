@@ -248,8 +248,8 @@ A few smaller decisions that follow from the requirements are worth calling out:
 
 ### Prerequisites
 
-| Tool   | Version                                                     |
-| ------ | ----------------------------------------------------------- |
+| Tool   | Version                                                      |
+| ------ |--------------------------------------------------------------|
 | JDK    | 25 (or any JDK 17+)                                          |
 | Maven  | 3.9+                                                         |
 | Node.js| 22+ with npm 10+ (only needed for the `dev` workflow)        |
@@ -258,8 +258,10 @@ A few smaller decisions that follow from the requirements are worth calling out:
 The `prod` Maven profile downloads its own Node/npm, so a local Node install is not required there.
 
 ---
+### Deployment Profiles
+The application supports different profiles depending on your target environment:
 
-### 1. `dev` Profile — Local Coding with Hot Reload
+#### 1. Dev — Local Instance ideal for coding with hot reload
 
 Frontend and backend stay completely decoupled. Run each in **its own terminal**.
 
@@ -298,8 +300,10 @@ Then open <http://localhost:5173>.
 
 ---
 
-### 2. `prod` Profile — Local Executable Standalone JAR
+#### 2. Prod
+The application can be deployed for production using the following options:
 
+##### a) Standalone Executable JAR
 One command produces a single JAR that serves both the API and the compiled React UI on port 8080:
 
 ```bash
@@ -307,7 +311,6 @@ mvn clean package -Pprod
 ```
 
 The `prod` profile:
-
 1. Installs a pinned Node/npm into `target/` (no global install needed).
 2. Runs `npm install` and `npm run build` inside `frontend/`.
 3. Copies `frontend/dist` into `target/classes/static`.
@@ -332,7 +335,10 @@ java -Dspring.profiles.active=prod -DPORT=9090 -jar target/hpe-morpheus-coffee-c
 
 ---
 
-### 3. `prod-cloud` — Automated Render Deployment via Docker
+##### b) Cloud Deployment (Render)
+[Render](https://render.com) offers a [free plan](https://render.com/docs/free) that is excellent for hosting small applications and demos.
+
+> ⚠️ **Note:** with the Render Free Tier, the instances automatically spin down after approximately 15 minutes of inactivity. The next incoming request will trigger a cold start, causing a delay of 50–60 seconds while the container boots back up. This is standard behavior for free hosting tiers.
 
 The root [`Dockerfile`](Dockerfile) builds the whole application in three stages:
 
@@ -364,10 +370,7 @@ docker run --rm -p 8080:8080 -e PORT=8080 hpe-morpheus-coffee-club
 4. Leave the port blank; Render injects `PORT` and the app honours it.
 5. Deploy. Every push to the tracked branch triggers a rebuild.
 
-**Two things to know about the Render free plan:**
-
-- Free instances spin down after ~15 minutes of inactivity, so the next visitor waits 50–60 seconds
-  for a cold start.
+**Additional things to keep in mind with the Render free plan:**
 - The free filesystem is ephemeral, so the H2 file resets on restart and the app re-seeds Bob and
   Jim. Attach a persistent disk mounted at `/app/data` (see the commented block in `render.yaml`) to
   keep history across restarts.
@@ -380,17 +383,17 @@ docker run --rm -p 8080:8080 -e PORT=8080 hpe-morpheus-coffee-club
 mvn test
 ```
 
-63 JUnit tests covering:
+Total of 63 JUnit tests covering:
 
-| Suite                       | Covers                                                                       |
-| --------------------------- | ----------------------------------------------------------------------------- |
-| `NamesTest`, `MoneyTest`    | Name matching rules and two-decimal money scaling                              |
-| `BalanceCalculatorTest`     | Lifetime paid/consumed/net aggregation, case-insensitive merging, ordering     |
-| `PayerSelectorTest`         | Lowest net wins, ties, removed rows, zero prices, newcomers, nobody ordering   |
+| Suite                       | Covers                                                                                                  |
+| --------------------------- |---------------------------------------------------------------------------------------------------------|
+| `NamesTest`, `MoneyTest`    | Name matching rules and two-decimal money scaling                                                       |
+| `BalanceCalculatorTest`     | Lifetime paid/consumed/net aggregation, case-insensitive merging, ordering                              |
+| `PayerSelectorTest`         | Lowest net wins, ties, removed rows, zero prices, newcomers, nobody ordering                            |
 | `CoffeeClubServiceTest`     | Pre-population rules, submission, removal tombstones, same-day replacement, multi-day fairness rotation |
-| `CoffeeOrderControllerTest` | Every validation rejection and the exact error payload the UI relies on        |
-| `DataInitializerTest`       | Seeds a blank database once and never re-seeds                                 |
-| `CoffeeClubIntegrationTest` | Full round trip against the real application context                           |
+| `CoffeeOrderControllerTest` | Every validation rejection and the exact error payload the UI relies on                                 |
+| `DataInitializerTest`       | Seeds a blank database once and never re-seeds                                                          |
+| `CoffeeClubIntegrationTest` | Full round trip against the real application context                                                    |
 
 Frontend type checking (also run as part of `npm run build`):
 
