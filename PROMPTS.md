@@ -12,6 +12,7 @@
     - [6.1 Dev Setup: Build command failing when run in terminal (IntelliJ but PowerShell in general)](#61-dev-setup-build-command-failing-when-run-in-terminal-intellij-but-powershell-in-general)
     - [6.2 Dev setup: command failing for Vite Dev server install](#62-dev-setup-command-failing-for-vite-dev-server-install)
     - [6.3 Dev setup: /h2-console was not working and gave 404 error for index.html](#63-dev-setup-h2-console-was-not-working-and-gave-404-error-for-indexhtml)
+    - [6.4 Deploy to cloud: Render cloud info \& clarrifications](#64-deploy-to-cloud-render-cloud-info--clarrifications)
 
 # AI Usage Summary
 This file documents the AI prompts used during the development of this project and explains their contribution to the final solution.
@@ -157,4 +158,11 @@ You can refer to the [PROMPTS_Claude.md](PROMPTS_Claude.md) file showcasing the 
 * **Prompt (Gemini):**
 * **Note: Just mentioned '[Various]' as prompt as to not clog up this file with all the various prompts used around this.**
   > "[Various /h2-console troubleshooting & clarifying prompts]"
-* **Contribution:** Sent me down so many wrong rabbit holes with incorrect suggestions. Moved over to Claude for this to look at and fix, which it did.  
+* **Contribution:** Sent me down so many wrong rabbit holes with incorrect suggestions. Moved over to Claude for this to look at and fix, which it did.
+
+### 6.4 Deploy to cloud: Render cloud info & clarrifications 
+* **Prompt (Gemini):**
+* **Note: Just mentioned '[Various]' as prompt as to not clog up this file with all the various prompts used around this.**
+  > "[Various Render cloud info, questions & clarifying prompts]"
+* **Contribution:** It helped me understand how to setup the Render cloud as a free instance.  
+

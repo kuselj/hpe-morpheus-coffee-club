@@ -17,12 +17,18 @@ FROM node:22-alpine AS frontend-build
 
 WORKDIR /build
 
-# The frontend is an npm workspace, so the single lockfile lives at the repository root and both
-# manifests are needed before dependencies can be installed. Copying them on their own keeps this
-# layer cached while only source files change.
-COPY package.json package-lock.json ./
+# The frontend is an npm workspace, so both manifests are needed before dependencies can be
+# installed. Copying them on their own keeps this layer cached while only source files change.
+#
+# package-lock.json is deliberately NOT copied. npm only records the native binaries matching the
+# platform the lockfile was generated on, so a lockfile produced on Windows pins the win32 builds
+# of rolldown (Vite's bundler), @tailwindcss/oxide and lightningcss. Under `npm ci` this image
+# would then install no usable binding at all and the build would die on an ESM import. Resolving
+# here instead picks the linux-musl builds this base image needs; versions still come from the
+# semver ranges in the manifests.
+COPY package.json ./
 COPY frontend/package.json ./frontend/
-RUN npm ci --no-audit --no-fund
+RUN npm install --no-audit --no-fund
 
 COPY frontend/ ./frontend/
 RUN npm run build --workspace=frontend

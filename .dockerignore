@@ -10,6 +10,10 @@ frontend/node_modules/
 frontend/dist/
 frontend/.vite/
 
+# The lockfile records native binaries only for the platform that generated it, so the container
+# must resolve its own. See the comment above the npm install in the Dockerfile.
+package-lock.json
+
 .git/
 .github/
 .idea/

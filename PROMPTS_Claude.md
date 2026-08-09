@@ -164,3 +164,14 @@ _"4. Initial App Generation via Claude"_; it is summarised below rather than rep
   > etc.).'"
 * **Contribution:** Turned the plain filename into a relative markdown link to
   [PROMPTS_Claude.md](PROMPTS_Claude.md) so it is clickable from the rendered document.
+
+---
+
+* **Prompt:**
+  > "So the build on Render failed with: [Docker build log ending in `npm error command sh -c tsc -b
+  > && vite build` / `RUN npm run build --workspace=frontend` did not complete successfully]"
+* **Contribution:** Diagnosed it as npm recording native binaries only for the platform that
+  generated the lockfile — the Windows lockfile pins the win32 builds of rolldown, @tailwindcss/oxide
+  and lightningcss, so `npm ci` on Alpine installed no usable binding and the build died on an ESM
+  import; confirmed by simulating `npm ci`/`npm install` with `--os=linux --libc=musl`, then changed
+  Dockerfile stage 1 to resolve without the lockfile so it picks the linux-musl builds.
