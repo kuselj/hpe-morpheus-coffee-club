@@ -133,3 +133,24 @@ _"4. Initial App Generation via Claude"_; it is summarised below rather than rep
   prefix as a dependency; removed the entry and deleted the stray `frontend/package-lock.json`,
   since npm workspaces keep a single lockfile at the root, and reworked Dockerfile stage 1 to
   install from the workspace root so the container build still gets a reproducible `npm ci`.
+
+---
+
+* **Prompt:**
+  > "I've placed a demo image of the app under: frontend/public/demo.png ... Can you add this image
+  > (preferably via reference) under the 'HPE Morpheus Coffee Club' section before the table of
+  > contents of the README.md. Can you also update this statement '... the drinks they have drunk'
+  > to be '... the drinks they have consumed'"
+* **Contribution:** Added the screenshot as a reference-style image between the intro and the table
+  of contents, with the definition kept with the other link references at the foot of the file, and
+  changed "drunk" to "consumed" in the net difference formula.
+
+---
+
+* **Prompt:**
+  > "Maybe we can also mention underneath the demo.png image in readme.md that 'Note: You can also
+  > view this demo image in the running app via `/public/demo.png`' maybe as a bullet point?"
+* **Contribution:** Added the note as a bullet under the image, but documented the path as
+  `/demo.png` rather than `/public/demo.png` — Vite flattens `public/` into the bundle root at build
+  time, so the `/public/` form happens to work in dev but returns 404 from the packaged JAR, which
+  was confirmed against a running build of each.

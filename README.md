@@ -7,11 +7,16 @@ Drinks do not all cost the same, so taking strict turns is not actually fair. In
 a lifetime ledger for every coworker and picks the person who is furthest behind:
 
 ```
-net difference = (total they have paid for the group) - (total cost of the drinks they have drunk)
+net difference = (total they have paid for the group) - (total cost of the drinks they have consumed)
 ```
 
 Among everyone ordering today, the lowest net difference pays. A tie goes to whoever appears first
 in the table. Someone with no history starts at `0.00`.
+
+![The group order page: today's order with each person's drink and price, the selected payer and the running total][demo]
+
+- **Note:** You can also view this demo image in the running app via `/demo.png`
+  (for example <http://localhost:5173/demo.png> in dev), which makes it easy to share.
 
 ---
 
@@ -384,3 +389,7 @@ Stop the app and delete the `data/` folder. The next startup re-seeds Bob and Ji
 **The H2 console says "Database may be already in use".**
 The JDBC URL in the console's login form is missing `AUTO_SERVER=TRUE`. Use
 `jdbc:h2:file:./data/coffeedb;AUTO_SERVER=TRUE`.
+
+<!-- Link references -->
+
+[demo]: frontend/public/demo.png
