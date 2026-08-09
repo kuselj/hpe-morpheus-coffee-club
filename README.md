@@ -13,10 +13,9 @@ net difference = (total they have paid for the group) - (total cost of the drink
 Among everyone ordering today, the lowest net difference pays. A tie goes to whoever appears first
 in the table. Someone with no history starts at `0.00`.
 
-## 🚀 Live Demo
+## Live Demo 🚀
 
 Experience the live web application here: **[hpe-morpheus-coffee-club.onrender.com](https://hpe-morpheus-coffee-club.onrender.com/)**
-
 - **Note:** the app is hosted on Render cloud (free plan) which might result in it loading slowly
   initially:
   - Free plan instances on Render spin down after ~15 minutes of inactivity, so the next visitor
@@ -56,7 +55,7 @@ Experience the live web application here: **[hpe-morpheus-coffee-club.onrender.c
 ## Table of Contents
 
 - [HPE Morpheus Coffee Club](#hpe-morpheus-coffee-club)
-  - [🚀 Live Demo](#-live-demo)
+  - [Live Demo 🚀](#live-demo-)
   - [Cross-Platform UI Previews](#cross-platform-ui-previews)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
