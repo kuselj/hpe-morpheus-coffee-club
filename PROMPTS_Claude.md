@@ -254,3 +254,24 @@ _"4. Initial App Generation via Claude"_; it is summarised below rather than rep
   > visitor waits 50–60 seconds for a cold start."
 * **Contribution:** Reworked the note into a bullet with the cold-start detail nested beneath it,
   so the headline reason reads first and the explanation sits under it.
+
+---
+
+* **Prompt:**
+  > "Standalone Executable JAR command: `java -Dspring.profiles.active=prod -jar target/...jar` is
+  > not working and gives following error: `Error: Could not find or load main class
+  > .profiles.active=prod`"
+* **Contribution:** Traced it to PowerShell splitting an unquoted `-D…` argument at the first dot,
+  so `java` received `.profiles.active=prod` as its main class; quoted the `-D` arguments in the
+  README's run commands, which fixes PowerShell while remaining valid in Bash, zsh and cmd.
+
+---
+
+* **Prompt:**
+  > "I need it to work in Powershell, Linux, Windows & Mac"
+* **Contribution:** Replaced the Bash-only `MAVEN_OPTS="…" mvn …` troubleshooting command with the
+  setting passed directly to `mvn`, which needs no shell-specific env-var syntax, and split the
+  entry per platform since the truststore itself is OS-specific (`Windows-ROOT`, macOS
+  `KeychainStore`, and a one-off `keytool` import on Linux, which has no JDK-readable OS store);
+  verified the Windows command against a cleared cache and swept all 13 command blocks in the
+  README for shell-portability problems.

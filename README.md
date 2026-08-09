@@ -324,7 +324,7 @@ The `prod` profile:
 Run it:
 
 ```bash
-java -Dspring.profiles.active=prod -jar target/hpe-morpheus-coffee-club-1.0.0.jar
+java "-Dspring.profiles.active=prod" -jar target/hpe-morpheus-coffee-club-1.0.0.jar
 ```
 
 Then open <http://localhost:8080>.
@@ -332,8 +332,12 @@ Then open <http://localhost:8080>.
 To run on a different port:
 
 ```bash
-java -Dspring.profiles.active=prod -DPORT=9090 -jar target/hpe-morpheus-coffee-club-1.0.0.jar
+java "-Dspring.profiles.active=prod" "-DPORT=9090" -jar target/hpe-morpheus-coffee-club-1.0.0.jar
 ```
+
+> The quotes around each `-D…` argument matter on **PowerShell**, which otherwise splits
+> `-Dspring.profiles.active=prod` at the first dot and passes `.profiles.active=prod` to `java` as
+> the main class. Quoting is harmless in Bash, zsh and cmd, so the commands above work everywhere.
 
 > A plain `mvn clean package` (without `-Pprod`) builds and tests the backend only — useful for a
 > fast backend-only loop.
@@ -411,11 +415,29 @@ npm run typecheck --prefix frontend
 ## Troubleshooting
 
 **`PKIX path building failed` when Maven downloads dependencies.**
-Your network intercepts TLS with a corporate root certificate that Java's own truststore does not
-have. On Windows, point the JVM at the Windows certificate store for the build:
+Your network intercepts TLS with a corporate root certificate. The JDK keeps its own truststore, so
+having the certificate installed in the operating system is not enough — the build has to be told
+to use it. Pass the setting straight to `mvn` (rather than via `MAVEN_OPTS`, whose syntax differs
+per shell) and prefix any Maven command with it. Keep the quotes: PowerShell otherwise splits the
+argument at the first dot, and they are harmless everywhere else.
+
+Windows — PowerShell, cmd or Git Bash:
 
 ```bash
-MAVEN_OPTS="-Djavax.net.ssl.trustStoreType=Windows-ROOT" mvn clean package -Pprod
+mvn "-Djavax.net.ssl.trustStoreType=Windows-ROOT" clean package -Pprod
+```
+
+macOS — reads the login keychain:
+
+```bash
+mvn "-Djavax.net.ssl.trustStoreType=KeychainStore" clean package -Pprod
+```
+
+Linux has no OS truststore the JDK can read, so import the certificate into the JDK's own once and
+no per-command flag is needed afterwards:
+
+```bash
+sudo keytool -importcert -alias corporate-proxy -file proxy-ca.crt -cacerts -storepass changeit
 ```
 
 **`Port 8080 was already in use`.**
