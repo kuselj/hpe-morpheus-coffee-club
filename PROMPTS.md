@@ -140,7 +140,7 @@ Generate a root-level `PROMPTS_Claude.md` file and append to it throughout our s
 * **Contribution:** Claude built out the initial app based on these requirements which I then verified and tweaked according to what I wanted it to look like and function.
 
 ## 5. Claude Code Prompts During Development (Separate File: PROMPTS_Claude.md)
-You can refer to the 'PROMPTS_Claude.md' file showcasing the subsequent user prompts I used (such as follow-up feature requests, bug fixes, or refinements etc.). 
+You can refer to the [PROMPTS_Claude.md](PROMPTS_Claude.md) file showcasing the subsequent user prompts I used (such as follow-up feature requests, bug fixes, or refinements etc.). 
 
 ## 6. AI usage besides Claude after initial app creation
 ### 6.1 Dev Setup: Build command failing when run in terminal (IntelliJ but PowerShell in general)

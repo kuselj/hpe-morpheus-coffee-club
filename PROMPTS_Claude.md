@@ -154,3 +154,13 @@ _"4. Initial App Generation via Claude"_; it is summarised below rather than rep
   `/demo.png` rather than `/public/demo.png` — Vite flattens `public/` into the bundle root at build
   time, so the `/public/` form happens to work in dev but returns 404 from the packaged JAR, which
   was confirmed against a running build of each.
+
+---
+
+* **Prompt:**
+  > "Please update this part in the PROMPTS.md so that the PROMPTS_Claude.md text is actually a link
+  > to the PROMPTS_Claude.md file: 'You can refer to the 'PROMPTS_Claude.md' file showcasing the
+  > subsequent user prompts I used (such as follow-up feature requests, bug fixes, or refinements
+  > etc.).'"
+* **Contribution:** Turned the plain filename into a relative markdown link to
+  [PROMPTS_Claude.md](PROMPTS_Claude.md) so it is clickable from the rendered document.
