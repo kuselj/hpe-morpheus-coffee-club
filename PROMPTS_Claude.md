@@ -275,3 +275,64 @@ _"4. Initial App Generation via Claude"_; it is summarised below rather than rep
   `KeychainStore`, and a one-off `keytool` import on Linux, which has no JDK-readable OS store);
   verified the Windows command against a cleared cache and swept all 13 command blocks in the
   README for shell-portability problems.
+
+---
+
+* **Prompt:**
+  > "Can you create a relevant CLAUDE.md file for this project?"
+* **Contribution:** Added a root `CLAUDE.md` covering the build/test/dev commands and the
+  architecture that spans several files — the fairness rule, the derived ledger, the payer logic
+  being mirrored in TypeScript, `schema.sql` owning the DDL, and the environment gotchas found
+  while building the project.
+
+---
+
+* **Prompt:**
+  > "The CLAUDE.md files seems bloated and contains duplicate info that is in the README.md can
+  > update so that it is a cleaner, tighter version ... keeps only the critical commands, developer
+  > synchronization notes, and architectural invariants that Claude needs to know before modifying
+  > code."
+* **Contribution:** Cut it from 152 to 66 lines by dropping everything already covered in
+  `README.md` or the Dockerfile's own comments, and reorganised the remainder around what breaks if
+  it is not known — adding a "Things that must change together" section that also flags the mirrored
+  input validation.
+
+---
+
+* **Prompt:**
+  > "1) Quote every -D… argument ... Update to indicate that this was done to be cross-platform i.e.
+  > compatible with Windows, Linux and macOS. 2) PROMPTS.md was just for code assignment request
+  > where reviewers wanted to see all the prompts used ... Claude.md is the authoritive file to give
+  > context for other developers runtimes."
+* **Contribution:** Reframed the quoting rule as a cross-platform requirement to preserve when
+  adding commands, and replaced the prompt-log note with a section setting out that `CLAUDE.md` is
+  the authoritative context for Claude instances while the two prompt files are historical records
+  kept for human auditability.
+
+---
+
+* **Prompt:**
+  > "Can you update the: 'UI copy is quoted in the README...' to be the following instead: Note:
+  > Exact UI strings for ORDER_NOTES, PAYER_PLACEHOLDER, and the header subtitle are documented in
+  > README.md file as well. Any copy changes made in the code or documentation must be mirrored in
+  > both places."
+* **Contribution:** Replaced the bullet with the supplied wording, which states the two-way
+  obligation explicitly rather than only the code-to-README direction.
+
+---
+
+* **Prompt:**
+  > "We should also probably add this guidance in the Claude.md file? CSS / Styling: ensure common &
+  > repeating style elements are contained in a separate CSS file to ensure optimal maintainability."
+* **Contribution:** Added it as the lead bullet under Frontend specifics — the section previously
+  described how the shared stylesheet works without ever stating the rule that repeating styles
+  must go there rather than being inlined in components.
+
+---
+
+* **Prompt:**
+  > "Think we need to add this info to Claude.md as well: Mobile-First layout but equally suited for
+  > desktop"
+* **Contribution:** Added it as the first Frontend specifics bullet, with the concrete checks that
+  make it verifiable (375 px with no horizontal overflow, and a desktop layout that is designed
+  rather than stretched), so the dual card/table rendering below now reads as its consequence.
