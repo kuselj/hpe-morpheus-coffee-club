@@ -49,6 +49,9 @@ writes a self-referential `"root": "file:.."` into `frontend/package.json`.
 - **Note:** Exact UI strings for `ORDER_NOTES`, `PAYER_PLACEHOLDER`, and the header subtitle are
   documented in the `README.md` file as well. Any copy changes made in the code or documentation
   must be mirrored in both places.
+- **The `docs/*.drawio.svg` diagrams** describe the layering and the submit flow. Update them when
+  either changes. They are draw.io SVGs — the diagram XML lives in the file's `content` attribute
+  and is what draw.io re-renders from, so edit them in draw.io rather than hand-patching the SVG.
 
 ## Architectural invariants
 

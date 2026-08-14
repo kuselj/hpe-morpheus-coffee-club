@@ -336,3 +336,24 @@ _"4. Initial App Generation via Claude"_; it is summarised below rather than rep
 * **Contribution:** Added it as the first Frontend specifics bullet, with the concrete checks that
   make it verifiable (375 px with no horizontal overflow, and a desktop layout that is designed
   rather than stretched), so the dual card/table rendering below now reads as its consequence.
+
+---
+
+* **Prompt:**
+  > "I need to present the project during a code review interview ... it would be good to have SYSTEM
+  > ARCHITECTURE & DATA FLOW diagrams as draw.io svg formats ... And a good folder might be /docs?
+  > With references to these in the README.md ... Or do you have different suggestion or tweak?"
+* **Contribution:** Added `docs/system-architecture.drawio.svg` and `docs/data-flow.drawio.svg`,
+  generating the picture and the embedded draw.io XML from one definition so an edit in draw.io
+  cannot change the diagram; linked both from the README with the editing note, and caught two
+  errors while reviewing the output — an edge that routed backwards between side-by-side boxes and a
+  `PayerSelector → repository` arrow that does not exist in the code.
+
+---
+
+* **Prompt:**
+  > "I see you made it the diagrams public as well by adding it to frontend/public. This is detail
+  > info just for developers and I think best we just keep it in the docs directory"
+* **Contribution:** Removed the copies from `frontend/public` (they were staging for a rendering
+  check and would have shipped in the bundle) and re-ran the check by serving the files straight out
+  of `docs/` through Vite's `/@fs/` route instead.

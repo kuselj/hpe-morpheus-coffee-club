@@ -54,26 +54,29 @@ Experience the live web application here: **[hpe-morpheus-coffee-club.onrender.c
 
 ## Table of Contents
 
-- [HPE Morpheus Coffee Club](#hpe-morpheus-coffee-club)
-  - [Live Demo 🚀](#live-demo-)
-  - [Cross-Platform UI Previews](#cross-platform-ui-previews)
-  - [Table of Contents](#table-of-contents)
-  - [Features](#features)
-  - [Technology Stack](#technology-stack)
-  - [Project Structure](#project-structure)
-  - [How the Group Order Page Works](#how-the-group-order-page-works)
-  - [Data Model](#data-model)
-  - [API Reference](#api-reference)
-  - [Assumptions](#assumptions)
-  - [Build and Run](#build-and-run)
-    - [Prerequisites](#prerequisites)
-    - [Deployment Profiles](#deployment-profiles)
-      - [1. Dev — Local Instance ideal for coding with hot reload](#1-dev--local-instance-ideal-for-coding-with-hot-reload)
-      - [2. Prod](#2-prod)
-        - [a) Standalone Executable JAR](#a-standalone-executable-jar)
-        - [b) Cloud Deployment (Render)](#b-cloud-deployment-render)
-  - [Testing](#testing)
-  - [Troubleshooting](#troubleshooting)
+<!-- TOC -->
+* [HPE Morpheus Coffee Club](#hpe-morpheus-coffee-club)
+  * [Live Demo 🚀](#live-demo-)
+  * [Cross-Platform UI Previews](#cross-platform-ui-previews)
+  * [Table of Contents](#table-of-contents)
+  * [Features](#features)
+  * [Technology Stack](#technology-stack)
+  * [Architecture Diagrams](#architecture-diagrams)
+  * [Project Structure](#project-structure)
+  * [How the Group Order Page Works](#how-the-group-order-page-works)
+  * [Data Model](#data-model)
+  * [API Reference](#api-reference)
+  * [Assumptions](#assumptions)
+  * [Build and Run](#build-and-run)
+    * [Prerequisites](#prerequisites)
+    * [Deployment Profiles](#deployment-profiles)
+      * [1. Dev — Local Instance ideal for coding with hot reload](#1-dev--local-instance-ideal-for-coding-with-hot-reload)
+      * [2. Prod](#2-prod)
+        * [a) Standalone Executable JAR](#a-standalone-executable-jar)
+        * [b) Cloud Deployment (Render)](#b-cloud-deployment-render)
+  * [Testing](#testing)
+  * [Troubleshooting](#troubleshooting)
+<!-- TOC -->
 
 ---
 
@@ -107,6 +110,20 @@ Experience the live web application here: **[hpe-morpheus-coffee-club.onrender.c
 
 ---
 
+## Architecture Diagrams
+
+| Diagram | Shows |
+| ------- | ----- |
+| [System Architecture](docs/system-architecture.drawio.svg) | The layers from browser to database, how the UI is served in dev versus prod, and the deployment path |
+| [Data Flow](docs/data-flow.drawio.svg) | What happens on page load and on submit, including where the payer is decided |
+
+> These are **draw.io SVGs**: they render as ordinary images, but the diagram source is embedded in
+> the file. Open either one directly in the [draw.io desktop app](https://www.drawio.com/) or at
+> [app.diagrams.net](https://app.diagrams.net) to edit it, then save over the same `.drawio.svg` —
+> no separate source file to keep in sync.
+
+---
+
 ## Project Structure
 
 ```
@@ -114,6 +131,7 @@ hpe-morpheus-coffee-club/
 ├── pom.xml                       Maven build; 'prod' profile builds and embeds the frontend
 ├── Dockerfile                    3-stage image for Render ('prod-cloud')
 ├── render.yaml                   Render blueprint
+├── docs/                         Architecture diagrams (draw.io SVG, editable in place)
 ├── data/                         H2 database files (created at runtime, git-ignored)
 │
 ├── src/main/java/com/hpe/morpheus/coffeeclub/
