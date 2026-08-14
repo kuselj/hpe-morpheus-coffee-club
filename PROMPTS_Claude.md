@@ -428,3 +428,20 @@ _"4. Initial App Generation via Claude"_; it is summarised below rather than rep
   > 'Prod: ' to indicate these are normally production related?"
 * **Contribution:** Prefixed both rows with `Prod:`, which restores the Dev/Prod grouping the
   flattened numbering had dropped when the nested headings were summarised into one table.
+
+---
+
+* **Prompt:**
+  > "I updated the readme by making a few spelling/grammar corrections"
+* **Contribution:** Re-checked the document after the edits — all 22 in-page links resolve against
+  the now-HTML `<h1>`/`<h2>` headings, the generated TOC matches the body heading-for-heading, code
+  fences and the previews table are balanced, and every image and diagram path still resolves.
+
+---
+
+* **Prompt:**
+  > "In the README 'Deployment Profiles' summary table can you make it so that the Profile column
+  > text does not wrap"
+* **Contribution:** Joined the words in each Profile cell with `&nbsp;`, since markdown tables have
+  no column-width control and GitHub strips inline styles; confirmed in a browser that the same cell
+  wraps to two lines with ordinary spaces and stays on one with the entities.

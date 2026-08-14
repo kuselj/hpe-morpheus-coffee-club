@@ -286,9 +286,9 @@ The application supports different profiles depending on your target environment
 
 | Profile | Best for | What you get |
 | ------- | -------- | ------------ |
-| [**1. Dev**](#1-dev--local-instance-ideal-for-coding-with-hot-reload) | Active coding | Two servers, decoupled — Vite on `:5173` proxying to Spring Boot on `:8080`, with hot reload |
-| [**2a. Prod: Standalone JAR**](#a-standalone-executable-jar) | Running or demoing locally | One executable JAR serving the API and the built UI together on `:8080` |
-| [**2b. Prod: Cloud (Render)**](#b-cloud-deployment-render) | Sharing a public URL | A container built from the root `Dockerfile`, listening on the platform's `PORT` |
+| [**1.&nbsp;Dev**](#1-dev--local-instance-ideal-for-coding-with-hot-reload) | Active coding | Two servers, decoupled — Vite on `:5173` proxying to Spring Boot on `:8080`, with hot reload |
+| [**2a.&nbsp;Prod:&nbsp;Standalone&nbsp;JAR**](#a-standalone-executable-jar) | Running or demoing locally | One executable JAR serving the API and the built UI together on `:8080` |
+| [**2b.&nbsp;Prod:&nbsp;Cloud&nbsp;(Render)**](#b-cloud-deployment-render) | Sharing a public URL | A container built from the root `Dockerfile`, listening on the platform's `PORT` |
 
 #### 1. Dev — Local Instance ideal for coding with hot reload
 
