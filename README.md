@@ -1,4 +1,5 @@
-# HPE Morpheus Coffee Club
+<!-- Use HTML tag as opposed to the # in order for TOC not to include it and nesting everthing underneath it -->
+<h1>HPE Morpheus Coffee Club</h1>
 
 A mobile-first, fully responsive single-page web application for a small team that takes turns
 buying the daily coffee round.
@@ -52,13 +53,12 @@ Experience the live web application here: **[hpe-morpheus-coffee-club.onrender.c
 
 ---
 
-## Table of Contents
+<!-- Use HTML tag as opposed to the ## in order for TOC not to include it as item inside the TOC -->
+<h2>Table of Contents</h2>
 
 <!-- TOC -->
-* [HPE Morpheus Coffee Club](#hpe-morpheus-coffee-club)
   * [Live Demo 🚀](#live-demo-)
   * [Cross-Platform UI Previews](#cross-platform-ui-previews)
-  * [Table of Contents](#table-of-contents)
   * [Features](#features)
   * [Technology Stack](#technology-stack)
   * [Architecture Diagrams](#architecture-diagrams)
