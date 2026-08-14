@@ -1,4 +1,4 @@
-<!-- Use HTML tag as opposed to the # in order for TOC not to include it and nesting everthing underneath it -->
+<!-- Use HTML tag as opposed to the # in order for TOC not to include it and nesting everything underneath it -->
 <h1>HPE Morpheus Coffee Club</h1>
 
 A mobile-first, fully responsive single-page web application for a small team that takes turns
@@ -250,8 +250,8 @@ Errors come back as:
 To keep the development within reasonable time limits the following assumptions were made:
 
 1. Prioritized polished front-end UI over front-end testing and rely on the back-end validation
-   instead. However in regular production intended deployments I would go with Playwright for the
-   end to end testing.
+   instead. However, in regular production intended deployments I would go with Playwright for the
+   end-to-end testing.
 2. Tax calculations and additions were not incorporated.
 3. Historical order changes/corrections not catered for.
 4. **One group order per day:** same-day re-submissions overwrite the previous order of the day
@@ -283,6 +283,12 @@ The `prod` Maven profile downloads its own Node/npm, so a local Node install is 
 ---
 ### Deployment Profiles
 The application supports different profiles depending on your target environment:
+
+| Profile | Best for | What you get |
+| ------- | -------- | ------------ |
+| [**1. Dev**](#1-dev--local-instance-ideal-for-coding-with-hot-reload) | Active coding | Two servers, decoupled — Vite on `:5173` proxying to Spring Boot on `:8080`, with hot reload |
+| [**2a. Prod: Standalone JAR**](#a-standalone-executable-jar) | Running or demoing locally | One executable JAR serving the API and the built UI together on `:8080` |
+| [**2b. Prod: Cloud (Render)**](#b-cloud-deployment-render) | Sharing a public URL | A container built from the root `Dockerfile`, listening on the platform's `PORT` |
 
 #### 1. Dev — Local Instance ideal for coding with hot reload
 
@@ -369,11 +375,11 @@ java "-Dspring.profiles.active=prod" "-DPORT=9090" -jar target/hpe-morpheus-coff
 
 The root [`Dockerfile`](Dockerfile) builds the whole application in three stages:
 
-| Stage | Base image                       | Does                                                        |
-| ----- | -------------------------------- | ------------------------------------------------------------ |
-| 1     | `node:22-alpine`                 | Builds the React production bundle                            |
-| 2     | `maven:3.9-eclipse-temurin-25`   | Compiles Spring Boot, injecting stage 1's static output       |
-| 3     | `eclipse-temurin:25-jre-alpine`  | Minimal JRE runtime that executes the standalone JAR          |
+| Stage | Base image                       | Does                                                    |
+| ----- | -------------------------------- |---------------------------------------------------------|
+| 1     | `node:22-alpine`                 | Builds the React production bundle                      |
+| 2     | `maven:3.9-eclipse-temurin-25`   | Compiles Spring Boot, injecting stage 1's static output |
+| 3     | `eclipse-temurin:25-jre-alpine`  | Minimal JRE runtime that executes the standalone JAR    |
 
 The application reads Render's injected `PORT` environment variable and falls back to `8080`
 (`server.port: ${PORT:8080}` in `application.yml`), so the web service boots without extra config.
@@ -394,7 +400,7 @@ docker run --rm -p 8080:8080 -e PORT=8080 hpe-morpheus-coffee-club
 2. In Render, choose **New → Web Service** and connect the repository.
 3. Select **Docker** as the runtime — Render picks up the root `Dockerfile` automatically.
    (Alternatively use **New → Blueprint** and Render will read [`render.yaml`](render.yaml).)
-4. Leave the port blank; Render injects `PORT` and the app honours it.
+4. Leave the port blank; Render injects `PORT` and the app honors it.
 5. Deploy. Every push to the tracked branch triggers a rebuild.
 
 **Additional things to keep in mind with the Render free plan:**

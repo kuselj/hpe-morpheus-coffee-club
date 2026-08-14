@@ -357,3 +357,74 @@ _"4. Initial App Generation via Claude"_; it is summarised below rather than rep
 * **Contribution:** Removed the copies from `frontend/public` (they were staging for a rendering
   check and would have shipped in the bundle) and re-ran the check by serving the files straight out
   of `docs/` through Vite's `/@fs/` route instead.
+
+---
+
+* **Prompt:**
+  > "For the System Architecture diagram: 1) Add a title showcasing the app name and type of diagram
+  > 2) Rename Deployment to Cloud Deployment 3) Show how the spring jar is related to cloud
+  > deployment (arrow with label) 4) Maybe good to have a dashed arrow from Render (free plan)
+  > directly pointing to the purple H2 file database barrel with a text label indicating: 'hosts
+  > container & file system'"
+* **Contribution:** Added a two-line title, renamed the band, made the prod node explicitly the
+  standalone JAR with a `packaged into image` arrow into the Dockerfile, and routed a dashed
+  `hosts container & file system` edge from Render down the right-hand side into the H2 cylinder so
+  the ephemeral-disk caveat points at the storage it actually threatens; titled the data-flow
+  diagram to match.
+
+---
+
+* **Prompt:**
+  > "So this section the label is cut off and there is no arrow"
+* **Contribution:** The `packaged into image` label was wider than the 95 px gap it sat in, and its
+  white backplate covered the whole short arrow; widened the cloud column's spacing and made labels
+  step aside from lines they would otherwise hide. The missing check — labels were never tested
+  against anything — became a build guard, which immediately found two more instances.
+
+---
+
+* **Prompt:**
+  > "This part is not clear and can lead to confusion since it almost seems like a dead end after
+  > BalanceCalculator. Keep the arrow pointing from CoffeeClubService to BalanceCalculator but maybe
+  > label as 'Calculate balances & Determine Payer'. Then add a second, distinct return arrow from
+  > BalanceCalculator back to CoffeeClubService ... label it: Payer"
+* **Contribution:** Re-proportioned that row to open a gap wide enough for the labels, then drew the
+  call and return as two arrows offset above and below centre; the guard also caught the new label
+  lying across the `controller → service` connector and an older collision on the `dev` label, both
+  fixed by separating the edges' exit points.
+
+---
+
+* **Prompt:**
+  > "Maybe the 'payer' label can be on top of the return arrow line since it could be confused as the
+  > label for the arrow from CoffeeClubService to CoffeeOrderRepository. I'm also wondering if 'hosts
+  > container & file system' should rather maybe be just database or JDBC similar to from
+  > CoffeeOrderRepository to H2 File"
+* **Contribution:** Moved `payer` onto its own return line so it can no longer be read as belonging
+  to the arrow below it, and shortened the Render edge to `file system` — not `JDBC`, since Render
+  never speaks to the database; it only owns the disk the H2 file happens to sit on.
+
+---
+
+* **Prompt:**
+  > "In the README, Under 'Deployment Profiles' I'm thinking it will probably be easier to jump to the
+  > section the user is interested in if we have summary of the profiles just below the first
+  > sentence after the 'Deployment Profiles' - could even be a summary table of sorts"
+* **Contribution:** Added a three-row summary table whose profile names link straight to their
+  sections, with a "Best for" column so a reader can pick by intent rather than by reading each
+  option in turn.
+
+---
+
+* **Prompt:**
+  > "For the Best For column could you update the wording on each row to start with Uppercase letter"
+* **Contribution:** Capitalised the three "Best for" entries, matching the sentence case already
+  used in the "What you get" column.
+
+---
+
+* **Prompt:**
+  > "Maybe for 2.a and 2.b of that summary table we can prefix their text after the number with
+  > 'Prod: ' to indicate these are normally production related?"
+* **Contribution:** Prefixed both rows with `Prod:`, which restores the Dev/Prod grouping the
+  flattened numbering had dropped when the nested headings were summarised into one table.
