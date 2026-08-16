@@ -467,3 +467,25 @@ _"4. Initial App Generation via Claude"_; it is summarised below rather than rep
   H2 and PostgreSQL; documented in `schema.sql` that the two `IF NOT EXISTS` clauses are the only
   vendor extensions, why they are required, and what Oracle, SQL Server and MySQL would need instead
   — a single portable file across all engines is not achievable.
+
+---
+
+* **Prompt:**
+  > "Could you update the readme to show the location of the seed sql file"
+* **Contribution:** Named `src/main/resources/data.sql` alongside `schema.sql` in the Data Model
+  intro and again on the Seed data table, with a line on how to change who the club starts with.
+
+---
+
+* **Prompt:**
+  > "To cater for the following edge: Application is started and populated with seed data with
+  > historical records added afterwards (e.g. deployed to a different cloud environment). The GUI
+  > will currently only display persons who ordered in the previous (last historic) order. However it
+  > needs to look backwards and also include those persons and their data that were not marked as
+  > removed i.e. Removed='N' ... I've added the following SQL data files to be used for testing these
+  > scenarios ... Could you also ensure they use standard SQL compatible across different database"
+* **Contribution:** Changed `prepopulate` to build the roster from each person's most recent record
+  across the whole history rather than from the latest order date alone, so anyone not marked
+  removed stays on the list however long ago they last ordered; added `ActiveRosterScenarioTest`
+  driving both supplied fixtures, and rewrote those fixtures in ISO SQL with `INTERVAL` dates
+  relative to `CURRENT_DATE` so they stay older than the seed instead of relying on fixed literals.

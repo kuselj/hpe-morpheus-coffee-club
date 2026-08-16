@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -77,16 +78,25 @@ public class CoffeeClubService {
             return new PrepopulateResponse(List.of(), List.copyOf(balances.values()));
         }
 
-        LocalDate latestOrderDate = history.getFirst().getOrderDate();
         Map<String, BigDecimal> lastPositivePrices = lastPositivePriceByName(history);
 
+        // The roster is everyone still in the club, not just whoever happened to appear on the most
+        // recent date. Someone who skipped the last few rounds — or whose history was loaded into a
+        // fresh environment after the seed ran — is still a member until a row marks them removed.
+        //
+        // `history` is newest first, so the first row seen for a name is that person's most recent
+        // record, and that record alone decides whether they are still active.
         Map<String, PrepopulatedLine> roster = new LinkedHashMap<>();
+        Set<String> alreadyJudged = new HashSet<>();
         for (CoffeeOrder order : history) {
-            if (!order.getOrderDate().equals(latestOrderDate) || order.isRemovedFlagSet()) {
+            String key = Names.key(order.getName());
+            if (!alreadyJudged.add(key)) {
                 continue;
             }
-            String key = Names.key(order.getName());
-            roster.putIfAbsent(key, new PrepopulatedLine(
+            if (order.isRemovedFlagSet()) {
+                continue;
+            }
+            roster.put(key, new PrepopulatedLine(
                     Names.normalise(order.getName()),
                     order.getDrink() == null ? "" : order.getDrink().trim(),
                     Money.scale(lastPositivePrices.getOrDefault(key, Money.ZERO))));

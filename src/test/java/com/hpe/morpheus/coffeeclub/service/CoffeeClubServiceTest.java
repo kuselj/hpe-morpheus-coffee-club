@@ -71,19 +71,31 @@ class CoffeeClubServiceTest {
         }
 
         @Test
-        @DisplayName("rows come from the most recent order date, sorted alphabetically by name")
-        void usesLatestOrderDateSortedByName() {
+        @DisplayName("everyone still in the club is listed, sorted alphabetically by name")
+        void listsEveryActiveCoworkerSortedByName() {
             given(YESTERDAY, "Zara", "Flat White", "4.00", "0.00", "N");
             given(YESTERDAY, "Ana", "Latte", "3.50", "0.00", "N");
             given(YESTERDAY, "bob", "Cappuccino", "3.00", "10.50", "N");
-            given(TWO_DAYS_AGO, "Ghost", "Espresso", "2.00", "0.00", "N");
+            // Sat out the last round but was never removed, so still a member.
+            given(TWO_DAYS_AGO, "Quinn", "Espresso", "2.00", "0.00", "N");
 
             PrepopulateResponse response = service().prepopulate();
 
             assertThat(response.lines())
                     .extracting(PrepopulatedLine::name)
-                    .containsExactly("Ana", "bob", "Zara");
-            assertThat(response.lines()).noneMatch(row -> row.name().equals("Ghost"));
+                    .containsExactly("Ana", "bob", "Quinn", "Zara");
+        }
+
+        @Test
+        @DisplayName("a removal on an earlier date still keeps that person off the roster")
+        void removalOnAnEarlierDateStillApplies() {
+            given(TWO_DAYS_AGO, "Gone", "Espresso", "2.00", "0.00", "N");
+            given(YESTERDAY, "Gone", "Espresso", "0.00", "0.00", "Y");
+            given(YESTERDAY, "Ana", "Latte", "3.50", "0.00", "N");
+
+            assertThat(service().prepopulate().lines())
+                    .extracting(PrepopulatedLine::name)
+                    .containsExactly("Ana");
         }
 
         @Test

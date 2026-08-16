@@ -73,6 +73,11 @@ writes a self-referential `"root": "file:.."` into `frontend/package.json`.
   constructor over vendor-specific inserts. The only deliberate non-standard constructs are the two
   `IF NOT EXISTS` clauses in `schema.sql`, which the run-on-every-startup model requires; the header
   there lists what other engines would need.
+- **The roster is everyone still active, not the last order's participants.** `prepopulate` walks
+  the whole history newest-first and takes each person's *most recent* row: if that row is not
+  flagged removed they are still a member and get carried forward, however long ago they last
+  ordered. This matters when history is imported into an environment after the seed has run — those
+  people are absent from the latest date but still in the club.
 - **Removal never deletes.** A pre-populated person gets a tombstone row with `is_removed = 'Y'` and
   their original name and drink restored, so their balance survives being re-added. A row added via
   *Add Person* and removed before it was ever saved is dropped from the payload entirely.

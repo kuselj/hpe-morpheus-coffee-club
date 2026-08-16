@@ -82,7 +82,7 @@ Experience the live web application here: **[hpe-morpheus-coffee-club.onrender.c
 
 ## Features
 
-- **Pre-populated group order** — the table opens with everyone from the previous order, their last
+- **Pre-populated group order** — the table opens with everyone still in the club, their last
   drink and their most recent non-zero price, sorted alphabetically.
 - **Live payer selection** — the Payer field resolves as soon as every row is valid, and updates
   instantly as prices change.
@@ -151,7 +151,7 @@ hpe-morpheus-coffee-club/
 │   ├── application-dev.yml
 │   └── application-prod.yml
 │
-├── src/test/java/                JUnit suite (66 tests)
+├── src/test/java/                JUnit suite (73 tests)
 │
 └── frontend/
     ├── vite.config.ts            Dev server on 5173, proxies /api/* to 8080
@@ -173,7 +173,7 @@ hpe-morpheus-coffee-club/
 
 | Column   | Behaviour                                                                                                        |
 | -------- | ---------------------------------------------------------------------------------------------------------------- |
-| Name     | Carried over from the most recent order. Required.                                                                |
+| Name     | Every coworker still in the club — anyone whose most recent record is not marked removed, even if they missed the last few rounds. Required. |
 | Drink    | The drink from that person's most recent order. Required.                                                         |
 | Price    | The most recent price **greater than zero** for that person anywhere in their history, else `0.00`. Required.      |
 | Remove   | Unticked by default. Ticking it sets Price to `0.00`; unticking restores the previous price.                       |
@@ -199,7 +199,8 @@ in `total_paid_today`; everyone else gets `0.00`.
 ## Data Model
 
 Table `hpe_morpheus_coffee_club` — one row per person per order date. The DDL is in
-[`src/main/resources/schema.sql`](src/main/resources/schema.sql).
+[`src/main/resources/schema.sql`](src/main/resources/schema.sql) and the seed data in
+[`src/main/resources/data.sql`](src/main/resources/data.sql).
 
 | Column             | Java field        | Type            | Notes                                            |
 | ------------------ | ----------------- | --------------- | ------------------------------------------------ |
@@ -211,12 +212,16 @@ Table `hpe_morpheus_coffee_club` — one row per person per order date. The DDL 
 | `total_paid_today` | `totalPaidToday`  | `DECIMAL(10,2)` | Group total for the payer, `0.00` for everyone else |
 | `is_removed`       | `isRemoved`       | `CHAR(1)`       | `Y` / `N`                                          |
 
-**Seed data** — on first startup against a blank database, two records dated yesterday are inserted:
+**Seed data** — defined in [`src/main/resources/data.sql`](src/main/resources/data.sql). On first
+startup against a blank database, two records dated yesterday are inserted:
 
 | order_date | name | drink        | price | total_paid_today | is_removed |
 | ---------- | ---- | ------------ | ----- | ---------------- | ---------- |
 | yesterday  | Bob  | Cappuccino   | 0.00  | 0.00             | N          |
 | yesterday  | Jim  | Black Coffee | 0.00  | 0.00             | N          |
+
+To start the club with different people, edit that file and delete the `data/` folder so the next
+startup seeds afresh.
 
 The database lives at `./data/coffeedb.mv.db` (`jdbc:h2:file:./data/coffeedb`) and survives
 restarts. Delete the `data/` folder to start over from the seed records.
@@ -417,7 +422,7 @@ docker run --rm -p 8080:8080 -e PORT=8080 hpe-morpheus-coffee-club
 mvn test
 ```
 
-Total of 66 JUnit tests covering:
+Total of 73 JUnit tests covering:
 
 | Suite                       | Covers                                                                                                  |
 | --------------------------- |---------------------------------------------------------------------------------------------------------|
@@ -427,6 +432,7 @@ Total of 66 JUnit tests covering:
 | `CoffeeClubServiceTest`     | Pre-population rules, submission, removal tombstones, same-day replacement, multi-day fairness rotation |
 | `CoffeeOrderControllerTest` | Every validation rejection and the exact error payload the UI relies on                                 |
 | `SeedDataTest`              | Runs `schema.sql` and `data.sql` for real: column order, seeding, and that a restart never duplicates or resurrects rows |
+| `ActiveRosterScenarioTest`  | History imported on top of the seed: everyone still active is carried forward, with their own drink and last real price |
 | `CoffeeClubIntegrationTest` | Full round trip against the real application context                                                    |
 
 Frontend type checking (also run as part of `npm run build`):
