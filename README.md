@@ -136,7 +136,7 @@ hpe-morpheus-coffee-club/
 │
 ├── src/main/java/com/hpe/morpheus/coffeeclub/
 │   ├── CoffeeClubApplication.java
-│   ├── config/                   Clock bean and seed data
+│   ├── config/                   Clock bean
 │   ├── controller/               REST API, SPA forwarding, global error handling
 │   ├── dto/                      Request/response records with validation constraints
 │   ├── entity/CoffeeOrder.java   Maps to hpe_morpheus_coffee_club
@@ -146,11 +146,12 @@ hpe-morpheus-coffee-club/
 │
 ├── src/main/resources/
 │   ├── schema.sql                Table DDL, in the agreed column order
+│   ├── data.sql                  Seed data for a blank database (edit this to change it)
 │   ├── application.yml           Shared config; server.port = ${PORT:8080}
 │   ├── application-dev.yml
 │   └── application-prod.yml
 │
-├── src/test/java/                JUnit suite (63 tests)
+├── src/test/java/                JUnit suite (66 tests)
 │
 └── frontend/
     ├── vite.config.ts            Dev server on 5173, proxies /api/* to 8080
@@ -416,7 +417,7 @@ docker run --rm -p 8080:8080 -e PORT=8080 hpe-morpheus-coffee-club
 mvn test
 ```
 
-Total of 63 JUnit tests covering:
+Total of 66 JUnit tests covering:
 
 | Suite                       | Covers                                                                                                  |
 | --------------------------- |---------------------------------------------------------------------------------------------------------|
@@ -425,7 +426,7 @@ Total of 63 JUnit tests covering:
 | `PayerSelectorTest`         | Lowest net wins, ties, removed rows, zero prices, newcomers, nobody ordering                            |
 | `CoffeeClubServiceTest`     | Pre-population rules, submission, removal tombstones, same-day replacement, multi-day fairness rotation |
 | `CoffeeOrderControllerTest` | Every validation rejection and the exact error payload the UI relies on                                 |
-| `DataInitializerTest`       | Seeds a blank database once and never re-seeds                                                          |
+| `SeedDataTest`              | Runs `schema.sql` and `data.sql` for real: column order, seeding, and that a restart never duplicates or resurrects rows |
 | `CoffeeClubIntegrationTest` | Full round trip against the real application context                                                    |
 
 Frontend type checking (also run as part of `npm run build`):

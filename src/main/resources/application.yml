@@ -15,6 +15,8 @@ spring:
     init:
       mode: always
       schema-locations: classpath:schema.sql
+      # Seeds a blank database. The script guards itself, so it is a no-op once data exists.
+      data-locations: classpath:data.sql
 
   jpa:
     hibernate:

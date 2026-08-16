@@ -445,3 +445,25 @@ _"4. Initial App Generation via Claude"_; it is summarised below rather than rep
 * **Contribution:** Joined the words in each Profile cell with `&nbsp;`, since markdown tables have
   no column-width control and GitHub strips inline styles; confirmed in a browser that the same cell
   wraps to two lines with ordinary spaces and stays on one with the entities.
+
+---
+
+* **Prompt:**
+  > "Please update the initial seed db data to be in an .sql file so that it is easy to update and
+  > maintain etc."
+* **Contribution:** Replaced `DataInitializer.java` with `src/main/resources/data.sql`, guarded by a
+  `WHERE NOT EXISTS` so the every-startup script cannot duplicate the seed or resurrect a removed
+  coworker; added `SeedDataTest`, which runs the real `schema.sql` and `data.sql` against a
+  throwaway H2 database, and pointed the test config at a no-op script so Boot's default
+  `classpath*:data.sql` scan does not seed the slices that assert on an empty table.
+
+---
+
+* **Prompt:**
+  > "Can you also ensure those SQL statements and files are SQL standard and compatible against
+  > different databases"
+* **Contribution:** Replaced the H2/SQL-Server-specific `DATEADD` with ISO datetime arithmetic
+  (`CURRENT_DATE - INTERVAL '1' DAY`), leaving both scripts on standard SQL that runs unchanged on
+  H2 and PostgreSQL; documented in `schema.sql` that the two `IF NOT EXISTS` clauses are the only
+  vendor extensions, why they are required, and what Oracle, SQL Server and MySQL would need instead
+  — a single portable file across all engines is not achievable.

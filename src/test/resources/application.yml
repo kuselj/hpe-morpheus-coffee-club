@@ -9,6 +9,9 @@ spring:
     init:
       mode: always
       schema-locations: classpath:schema.sql
+      # Boot would otherwise pick up data.sql through its default classpath*:data.sql scan and seed
+      # every slice. Tests build their own fixtures; the ones that want the real seed opt back in.
+      data-locations: classpath:no-seed.sql
   jpa:
     hibernate:
       ddl-auto: validate

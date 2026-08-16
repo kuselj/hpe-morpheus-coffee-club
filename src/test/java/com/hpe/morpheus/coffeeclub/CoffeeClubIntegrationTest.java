@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional // each test rolls back to the seeded state so the tests stay independent
+// The shared test config leaves data.sql out so the @DataJpaTest slices start from an empty table;
+// this test wants the real seed, so it opts back in.
+@TestPropertySource(properties = "spring.sql.init.data-locations=classpath:data.sql")
 @DisplayName("Coffee club end to end")
 class CoffeeClubIntegrationTest {
 

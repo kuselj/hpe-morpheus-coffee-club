@@ -63,6 +63,16 @@ writes a self-referential `"root": "file:.."` into `frontend/package.json`.
   contractual and Hibernate emits columns alphabetically, so do not switch back to
   `ddl-auto: update`. `CREATE TABLE IF NOT EXISTS` will not restructure an existing database —
   delete `data/` after a schema change.
+- **`data.sql` seeds a blank database and runs on every startup**, so it is guarded by a
+  `WHERE NOT EXISTS` over the whole table: it writes nothing once any row exists, and cannot
+  resurrect someone who was removed. Tests opt out of it via `data-locations: classpath:no-seed.sql`
+  in the test config, because Boot's default `classpath*:data.sql` would otherwise seed every slice;
+  tests that want the seed opt back in with `@TestPropertySource`.
+- **Both SQL files are written to ISO SQL and run unchanged on H2 and PostgreSQL.** Keep them that
+  way: prefer `CURRENT_DATE - INTERVAL '1' DAY` over `DATEADD`, and the `(VALUES …) AS t (cols)` row
+  constructor over vendor-specific inserts. The only deliberate non-standard constructs are the two
+  `IF NOT EXISTS` clauses in `schema.sql`, which the run-on-every-startup model requires; the header
+  there lists what other engines would need.
 - **Removal never deletes.** A pre-populated person gets a tombstone row with `is_removed = 'Y'` and
   their original name and drink restored, so their balance survives being re-added. A row added via
   *Add Person* and removed before it was ever saved is dropped from the payload entirely.
